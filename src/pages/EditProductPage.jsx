@@ -26,7 +26,6 @@ const EditProductPage = ({ categories, product }) => {
 EditProductPage.propTypes = {
   product: PropTypes.object,
   categories: PropTypes.array,
-  history: PropTypes.object,
 };
 
 const mapStateToProps = (state, { productId }) => ({
