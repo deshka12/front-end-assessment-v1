@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ProductForm } from "../Update/ProductForm";
+import { ProductForm } from "../components";
 
-const AddFormContainer = () => (
+const AddProductPage = () => (
   <>
     <Link to="/">Home</Link>
     <ProductForm
@@ -12,4 +12,4 @@ const AddFormContainer = () => (
     />
   </>
 );
-export default AddFormContainer;
+export default AddProductPage;

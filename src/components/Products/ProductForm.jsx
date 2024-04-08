@@ -8,10 +8,10 @@ import {
   Input,
   Label,
 } from "reactstrap";
-import { getMultiSelected, repeat } from "../../../utils";
-import { isCategoriesValid, isNameValid } from "./validators";
+import { getMultiSelected, repeat } from "../../utils/utils";
+import { isCategoriesValid, isNameValid } from "../../utils/validators";
 
-export const ProductForm = ({ onSave, product = {} }) => {
+const ProductForm = ({ onSave, product = {} }) => {
   const [name, setName] = useState(product.name || "");
   const [brand, setBrand] = useState(product.brand || "");
   const [rating, setRating] = useState(product.rating || 0);
@@ -154,3 +154,4 @@ ProductForm.propTypes = {
   categories: PropTypes.array.isRequired,
   onSave: PropTypes.func.isRequired,
 };
+export default ProductForm;

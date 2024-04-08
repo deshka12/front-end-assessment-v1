@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { ProductForm } from "./ProductForm";
 import { Link } from "react-router-dom";
+import { ProductForm } from "../components";
 
-const UpdateFormContainer = ({ categories, product }) => {
+const EditProductPage = ({ categories, product }) => {
   if (!product) {
     return null;
   }
@@ -23,7 +23,7 @@ const UpdateFormContainer = ({ categories, product }) => {
   );
 };
 
-UpdateFormContainer.propTypes = {
+EditProductPage.propTypes = {
   product: PropTypes.object,
   categories: PropTypes.array,
   history: PropTypes.object,
@@ -33,4 +33,4 @@ const mapStateToProps = (state, { productId }) => ({
   categories: state.categories,
 });
 
-export default connect(mapStateToProps)(UpdateFormContainer);
+export default connect(mapStateToProps)(EditProductPage);

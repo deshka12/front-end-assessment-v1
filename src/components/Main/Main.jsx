@@ -1,9 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-export const Main = ({children}) => (<div>{children}</div>);
+const Main = ({ children }) => <div>{children}</div>;
 
 Main.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
+export default Main;

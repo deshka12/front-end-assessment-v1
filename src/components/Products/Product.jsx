@@ -12,7 +12,7 @@ import {
 import { Link } from "react-router-dom";
 
 import { useDeleteProduct, useGetProductCategories } from "../../hooks";
-import { formatProductDates } from "../../utils";
+import { formatProductDates } from "../../utils/utils";
 
 const Product = ({ product }) => {
   const categories = useGetProductCategories(product);
