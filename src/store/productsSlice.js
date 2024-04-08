@@ -2,14 +2,21 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { productApi } from "../gateways/ProductApi";
 
 const initialState = {
-  products: [],
+  data: [],
   status: null,
   error: null,
 };
 
-export const fetchProducts = createAsyncThunk(
-  "products/fetchProducts",
+export const getProducts = createAsyncThunk(
+  "products/getProducts",
   async () => await productApi.getProducts()
+);
+
+export const deleteProduct = createAsyncThunk(
+  "products/deleteProduct",
+  async (id) => {
+    return await productApi.deleteProduct(id);
+  }
 );
 
 const productsSlice = createSlice({
@@ -18,16 +25,33 @@ const productsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchProducts.pending, (state, action) => {
+      //get
+      .addCase(getProducts.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
+      .addCase(getProducts.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.products = action.payload;
+        state.data = action.payload;
       })
-      .addCase(fetchProducts.rejected, (state, action) => {
+      .addCase(getProducts.rejected, (state, action) => {
         state.status = "failed";
-        state.products = [];
+        state.data = [];
+        state.error = action.error;
+      })
+      //delete
+      .addCase(deleteProduct.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        const id = action.meta.arg;
+        if (id) {
+          state.status = "succeeded";
+          state.data = state.data.filter((product) => product.id !== id);
+        }
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.status = "failed";
+        state.data = [];
         state.error = action.error;
       });
   },

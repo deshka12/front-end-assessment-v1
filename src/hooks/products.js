@@ -1,22 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchProducts } from "../store/productsSlice";
+import { deleteProduct, getProducts } from "../store/productsSlice";
 
 export const useGetProducts = () => {
   const dispatch = useDispatch();
-  const status = useSelector((state) => state.status);
-  const products = useSelector((state) => state.products.products);
+  const status = useSelector((state) => state.products.status);
+  const products = useSelector((state) => state.products.data);
 
   useEffect(() => {
-    if (status === undefined) {
-      dispatch(fetchProducts());
+    if (!status) {
+      dispatch(getProducts());
     }
   }, [status, dispatch]);
 
-  const isUninitialized = status === undefined;
-  const isLoading = status === "loading" || status === undefined;
-  const isError = status === "failed";
-  const isSuccess = status === "succeeded";
-
-  return { products, isUninitialized, isLoading, isError, isSuccess };
+  return { products, status };
+};
+export const useDeleteProduct = () => {
+  const dispatch = useDispatch();
+  return (id) => dispatch(deleteProduct(id));
 };
