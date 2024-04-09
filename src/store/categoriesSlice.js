@@ -6,6 +6,7 @@ const initialState = {
   error: null,
 };
 
+//assume its real api call
 export const getCategories = createAsyncThunk(
   "categories/getCategories",
   async () => await categoryApi.getCategories()

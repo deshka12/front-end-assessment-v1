@@ -15,6 +15,10 @@ export const useCategories = () => {
 
   return { categories, status };
 };
+export const useCategoriesName = () => {
+  const { categories } = useCategories();
+  return categories.map((el) => el.name);
+};
 
 export const useGetProductCategories = (product) => {
   const { categories, status } = useCategories();

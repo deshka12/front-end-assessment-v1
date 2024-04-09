@@ -7,11 +7,13 @@ const initialState = {
   error: null,
 };
 
+//assume its real api call
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   async () => await productApi.getProducts()
 );
 
+//assume its real api call
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
   async (id) => {

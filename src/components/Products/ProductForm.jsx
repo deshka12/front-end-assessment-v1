@@ -1,22 +1,19 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { Button, Form } from "reactstrap";
 import {
-  Button,
-  Form,
-  FormFeedback,
-  FormGroup,
-  Input,
-  Label,
-  Col,
-} from "reactstrap";
-import {
+  getMultiSelected,
+  isCategoriesValid,
   isChecked,
   isExpirationDateValid,
   isNameValid,
   repeat,
 } from "../../utils";
+import CustomInput from "../CustomInput/CustomInput";
+import { useCategoriesName } from "../../hooks";
 
 const ProductForm = ({ onSave, product = {} }) => {
+  const categories = useCategoriesName();
   const [formData, setFormData] = useState({
     name: product.name || "",
     brand: product.brand || "",
@@ -28,12 +25,20 @@ const ProductForm = ({ onSave, product = {} }) => {
     featured: product.featured || false,
   });
 
+  const { isNameCorrect, invalidNameError } = isNameValid(formData.name);
+  const { isCategoriesCorrect, invalidCategoriesError } = isCategoriesValid(
+    formData.categories
+  );
+  const { isValidDate, invalidDateError } = isExpirationDateValid(
+    formData.expirationDate
+  );
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     let newValue = value;
 
-    if (name === "expirationDate") {
-      newValue = isExpirationDateValid(value);
+    if (name === "categories") {
+      newValue = getMultiSelected(e.target);
     }
 
     setFormData((prevData) => ({
@@ -49,117 +54,75 @@ const ProductForm = ({ onSave, product = {} }) => {
 
   return (
     <Form onSubmit={onSubmit}>
-      <FormGroup row>
-        <Label for="name" sm={2}>
-          Name
-        </Label>
-        <Col sm={5}>
-          <Input
-            invalid={!isNameValid(formData.name)}
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <FormFeedback>
-            Name is required, the length must not be greater than 200
-          </FormFeedback>
-        </Col>
-      </FormGroup>
-      <FormGroup>
-        <Label for="brand">Brand</Label>
-        <Input
-          type="text"
-          name="brand"
-          id="brand"
-          placeholder="Brand"
-          value={formData.brand}
-          onChange={handleChange}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label for="rating">Rating</Label>
-        <Input
-          type="select"
-          name="rating"
-          id="rating"
-          value={formData.rating}
-          onChange={handleChange}
-        >
-          {repeat(11).map((v) => (
-            <option key={v} value={v}>
-              {v}
-            </option>
-          ))}
-        </Input>
-      </FormGroup>
-      {/* <FormGroup>
-        <Label for="categories">Categories</Label>
-        <Input
-          invalid={!isCategoriesValid(formData.categories)}
-          type="select"
-          name="categories"
-          id="categories"
-          multiple
-          value={formData.categories}
-          onChange={handleChange}
-        >
-          {formData.categories.map(({ id, name }) => (
-            <option key={id} value={id}>
-              {name}
-            </option>
-          ))}
-        </Input>
-        <FormFeedback>A product must have from 1 to 5 categories</FormFeedback>
-      </FormGroup> */}
-      <FormGroup>
-        <Label for="itemsInStock">Items In Stock</Label>
-        <Input
-          type="number"
-          name="itemsInStock"
-          id="itemsInStock"
-          value={formData.itemsInStock}
-          onChange={handleChange}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label for="expirationDate">Expiration date</Label>
-        <Input
-          type="date"
-          name="expirationDate"
-          id="expirationDate"
-          value={formData.expirationDate}
-          onChange={handleChange}
-        />
-        <FormFeedback>
-          If a product has an expiration date it must expire not less than 30
-          days since now
-        </FormFeedback>
-      </FormGroup>
-      <FormGroup>
-        <Label for="receiptDate">Receipt date</Label>
-        <Input
-          type="date"
-          name="receiptDate"
-          id="receiptDate"
-          value={formData.receiptDate}
-          onChange={handleChange}
-        />
-      </FormGroup>
-      <FormGroup check>
-        <Label check>
-          <Input
-            disabled={true}
-            type="checkbox"
-            checked={isChecked(formData.rating)}
-            onChange={handleChange}
-            name="featured"
-          />{" "}
-          Featured
-        </Label>
-      </FormGroup>
+      <CustomInput
+        name="name"
+        label="Name"
+        type="text"
+        placeholder="Name"
+        value={formData.name}
+        onChange={handleChange}
+        invalid={!isNameCorrect}
+        errorMessage={invalidNameError}
+      />
+      <CustomInput
+        name="brand"
+        label="Brand"
+        type="text"
+        placeholder="Brand"
+        value={formData.brand}
+        onChange={handleChange}
+      />
+      <CustomInput
+        name="rating"
+        label="Rating"
+        type="select"
+        value={formData.rating}
+        onChange={handleChange}
+        options={repeat(11)}
+      />
+      <CustomInput
+        name="categories"
+        label="Categories"
+        type="select"
+        value={formData.categories}
+        onChange={handleChange}
+        options={categories}
+        multiple
+        invalid={!isCategoriesCorrect}
+        errorMessage={invalidCategoriesError}
+      />
+      <CustomInput
+        name="itemsInStock"
+        label="Items In Stock"
+        type="number"
+        value={formData.itemsInStock}
+        onChange={handleChange}
+      />
+      <CustomInput
+        name="expirationDate"
+        label="Expiration date"
+        type="date"
+        value={formData.expirationDate}
+        onChange={handleChange}
+        invalid={!isValidDate}
+        errorMessage={invalidDateError}
+      />
+      <CustomInput
+        name="receiptDate"
+        label="Receipt date"
+        type="date"
+        value={formData.receiptDate}
+        onChange={handleChange}
+      />
+      <CustomInput
+        name="Featured"
+        label="Featured"
+        type="checkbox"
+        checked={isChecked(formData.rating)}
+        onChange={handleChange}
+        disabled
+      />
+      <hr />
       <Button>Submit</Button>
     </Form>
   );
