@@ -1,15 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { ProductForm } from "../components";
+import { Header, ProductForm } from "../components";
 
-const AddProductPage = () => (
-  <>
-    <Link to="/">Home</Link>
-    <ProductForm
-      onSave={(data) => {
-        return;
-      }}
-    />
-  </>
-);
+const AddProductPage = () => {
+  const onSave = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <>
+      <Header name="Add Product" pathName="/" navigateTo="Home" />
+      <ProductForm onSave={onSave} />
+    </>
+  );
+};
 export default AddProductPage;

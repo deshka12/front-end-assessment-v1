@@ -3,7 +3,7 @@ import { Header, ProductsList } from "../components";
 
 const ProductsPage = () => (
   <>
-    <Header name="Products" />
+    <Header name="Products" pathName="/add" navigateTo="Add Product" />
     <ProductsList />
   </>
 );

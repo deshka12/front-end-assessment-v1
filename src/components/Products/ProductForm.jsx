@@ -7,52 +7,66 @@ import {
   FormGroup,
   Input,
   Label,
+  Col,
 } from "reactstrap";
-import { getMultiSelected, repeat } from "../../utils/utils";
-import { isCategoriesValid, isNameValid } from "../../utils/validators";
+import {
+  isChecked,
+  isExpirationDateValid,
+  isNameValid,
+  repeat,
+} from "../../utils";
 
 const ProductForm = ({ onSave, product = {} }) => {
-  const [name, setName] = useState(product.name || "");
-  const [brand, setBrand] = useState(product.brand || "");
-  const [rating, setRating] = useState(product.rating || 0);
-  const [categories, setCategories] = useState(product.categories || []);
-  const [itemsInStock, setItemsInStock] = useState(product.itemsInStock || 0);
-  const [receiptDate, setReceiptDate] = useState(product.receiptDate || "");
-  const [expirationDate, setExpirationDate] = useState(
-    product.expirationDate || ""
-  );
-  const [featured, setFeatured] = useState(product.featured);
+  const [formData, setFormData] = useState({
+    name: product.name || "",
+    brand: product.brand || "",
+    rating: product.rating || 0,
+    categories: product.categories || [],
+    itemsInStock: product.itemsInStock || 0,
+    receiptDate: product.receiptDate || "",
+    expirationDate: product.expirationDate || "",
+    featured: product.featured || false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    let newValue = value;
+
+    if (name === "expirationDate") {
+      newValue = isExpirationDateValid(value);
+    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : newValue,
+    }));
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    onSave({
-      name,
-      brand,
-      rating,
-      categories,
-      itemsInStock,
-      receiptDate,
-      expirationDate,
-      featured,
-    });
+    onSave(formData);
   };
 
   return (
     <Form onSubmit={onSubmit}>
-      <FormGroup>
-        <Label for="name">Name</Label>
-        <Input
-          invalid={!isNameValid(name)}
-          type="text"
-          name="name"
-          id="name"
-          placeholder="Name"
-          value={name}
-          onChange={({ target }) => setName(target.value)}
-        />
-        <FormFeedback>
-          Name is required, the length must not be greater than 200
-        </FormFeedback>
+      <FormGroup row>
+        <Label for="name" sm={2}>
+          Name
+        </Label>
+        <Col sm={5}>
+          <Input
+            invalid={!isNameValid(formData.name)}
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          <FormFeedback>
+            Name is required, the length must not be greater than 200
+          </FormFeedback>
+        </Col>
       </FormGroup>
       <FormGroup>
         <Label for="brand">Brand</Label>
@@ -61,8 +75,8 @@ const ProductForm = ({ onSave, product = {} }) => {
           name="brand"
           id="brand"
           placeholder="Brand"
-          value={brand}
-          onChange={({ target }) => setBrand(e.target.value)}
+          value={formData.brand}
+          onChange={handleChange}
         />
       </FormGroup>
       <FormGroup>
@@ -71,8 +85,8 @@ const ProductForm = ({ onSave, product = {} }) => {
           type="select"
           name="rating"
           id="rating"
-          value={rating}
-          onChange={({ target }) => setRating(target.value)}
+          value={formData.rating}
+          onChange={handleChange}
         >
           {repeat(11).map((v) => (
             <option key={v} value={v}>
@@ -81,33 +95,33 @@ const ProductForm = ({ onSave, product = {} }) => {
           ))}
         </Input>
       </FormGroup>
-      <FormGroup>
+      {/* <FormGroup>
         <Label for="categories">Categories</Label>
         <Input
-          invalid={!isCategoriesValid(categories)}
+          invalid={!isCategoriesValid(formData.categories)}
           type="select"
           name="categories"
           id="categories"
           multiple
-          value={categories}
-          onChange={({ target }) => setCategories(getMultiSelected(target))}
+          value={formData.categories}
+          onChange={handleChange}
         >
-          {categories.map(({ id, name }) => (
+          {formData.categories.map(({ id, name }) => (
             <option key={id} value={id}>
               {name}
             </option>
           ))}
         </Input>
         <FormFeedback>A product must have from 1 to 5 categories</FormFeedback>
-      </FormGroup>
+      </FormGroup> */}
       <FormGroup>
         <Label for="itemsInStock">Items In Stock</Label>
         <Input
           type="number"
           name="itemsInStock"
           id="itemsInStock"
-          value={itemsInStock}
-          onChange={({ target }) => setItemsInStock(target.value)}
+          value={formData.itemsInStock}
+          onChange={handleChange}
         />
       </FormGroup>
       <FormGroup>
@@ -116,8 +130,8 @@ const ProductForm = ({ onSave, product = {} }) => {
           type="date"
           name="expirationDate"
           id="expirationDate"
-          value={expirationDate}
-          onChange={({ target }) => setExpirationDate(target.value)}
+          value={formData.expirationDate}
+          onChange={handleChange}
         />
         <FormFeedback>
           If a product has an expiration date it must expire not less than 30
@@ -130,16 +144,18 @@ const ProductForm = ({ onSave, product = {} }) => {
           type="date"
           name="receiptDate"
           id="receiptDate"
-          value={receiptDate}
-          onChange={({ target }) => setReceiptDate(target.value)}
+          value={formData.receiptDate}
+          onChange={handleChange}
         />
       </FormGroup>
       <FormGroup check>
         <Label check>
           <Input
+            disabled={true}
             type="checkbox"
-            checked={featured}
-            onChange={({ target }) => setFeatured(target.checked)}
+            checked={isChecked(formData.rating)}
+            onChange={handleChange}
+            name="featured"
           />{" "}
           Featured
         </Label>
@@ -150,8 +166,7 @@ const ProductForm = ({ onSave, product = {} }) => {
 };
 
 ProductForm.propTypes = {
-  product: PropTypes.object,
-  categories: PropTypes.array.isRequired,
   onSave: PropTypes.func.isRequired,
 };
+
 export default ProductForm;

@@ -41,4 +41,4 @@ export const formatProductDates = (product) => {
   return { receiptDate, expirationDate, createdAt };
 };
 
-
+export const isChecked = (rating) => rating > 8;
