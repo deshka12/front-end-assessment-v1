@@ -6,6 +6,7 @@ import { useGetProducts } from "../../hooks";
 
 const ProductList = () => {
   const { products } = useGetProducts();
+
   const productsGroups = chunk(products, 3);
 
   return (

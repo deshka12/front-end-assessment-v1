@@ -9,7 +9,7 @@ export const App = () => (
       <Switch>
         <Route exact path="/" component={ProductsPage} />,
         <Route
-          path="edit/:productId"
+          path="/edit/:productId"
           render={({ match }) => (
             <EditProductPage productId={parseInt(match.params.productId)} />
           )}

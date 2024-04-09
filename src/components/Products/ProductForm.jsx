@@ -10,15 +10,16 @@ import {
   repeat,
 } from "../../utils";
 import CustomInput from "../CustomInput/CustomInput";
-import { useCategoriesName } from "../../hooks";
+import { useCategoriesName, usePreselectedCategories } from "../../hooks";
 
 const ProductForm = ({ onSave, product = {} }) => {
-  const categories = useCategoriesName();
+  const categoriesName = useCategoriesName();
+  const preselectedCategories = usePreselectedCategories(product);
   const [formData, setFormData] = useState({
     name: product.name || "",
     brand: product.brand || "",
     rating: product.rating || 0,
-    categories: product.categories || [],
+    categories: preselectedCategories || [],
     itemsInStock: product.itemsInStock || 0,
     receiptDate: product.receiptDate || "",
     expirationDate: product.expirationDate || "",
@@ -86,7 +87,7 @@ const ProductForm = ({ onSave, product = {} }) => {
         type="select"
         value={formData.categories}
         onChange={handleChange}
-        options={categories}
+        options={categoriesName}
         multiple
         invalid={!isCategoriesCorrect}
         errorMessage={invalidCategoriesError}

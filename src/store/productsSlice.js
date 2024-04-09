@@ -3,6 +3,7 @@ import { productApi } from "../gateways/ProductApi";
 
 const initialState = {
   data: [],
+  product: [],
   status: null,
   error: null,
 };

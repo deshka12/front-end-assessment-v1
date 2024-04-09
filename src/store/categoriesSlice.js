@@ -32,5 +32,5 @@ const categoriesSlice = createSlice({
       });
   },
 });
-
-export default categoriesSlice.reducer;
+const categoriesReducer = categoriesSlice.reducer;
+export default categoriesReducer;

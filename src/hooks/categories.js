@@ -22,10 +22,17 @@ export const useCategoriesName = () => {
 
 export const useGetProductCategories = (product) => {
   const { categories, status } = useCategories();
-  if (status === "succeeded") {
+  if (status === "succeeded" && product.categories) {
     return product.categories.map((categoryId) =>
       categories.find((category) => category.id === categoryId)
     );
   }
   return null;
+};
+
+export const usePreselectedCategories = (product) => {
+  const preselectedCategories = useGetProductCategories(product);
+  return preselectedCategories
+    ? preselectedCategories.map((el) => el.name)
+    : [];
 };
