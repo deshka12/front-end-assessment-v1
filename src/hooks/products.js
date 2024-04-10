@@ -21,14 +21,14 @@ export const useGetProducts = () => {
 export const useGetProductById = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState([]);
-  const products = useSelector((state) => state.products.data);
+  const { products, status } = useGetProducts();
 
   useEffect(() => {
-    const productData = products.find(
-      (product) => product.id === parseInt(productId)
-    );
-    if (productData) {
-      setProduct(productData);
+    if (status === "succeeded") {
+      const productData = products.find(
+        (product) => product.id === parseInt(productId)
+      );
+      productData && setProduct(productData);
     }
   }, [productId, products]);
 

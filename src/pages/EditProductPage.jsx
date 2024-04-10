@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, NotFound, ProductForm } from "../components";
+import { Header, ProductForm } from "../components";
 import { useGetProductById } from "../hooks";
 
 const EditProductPage = () => {

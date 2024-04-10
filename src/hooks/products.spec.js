@@ -1,6 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetProducts } from "./products";
+import { useDeleteProduct, useGetProducts } from "./products";
+import { deleteProduct } from "../store/productsSlice";
 
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
@@ -14,6 +15,11 @@ jest.mock("react", () => ({
 
 jest.mock("react-router-dom", () => ({
   useParams: jest.fn(),
+}));
+
+jest.mock("../store/productsSlice", () => ({
+  ...jest.requireActual("../store/productsSlice"),
+  deleteProduct: jest.fn(),
 }));
 
 describe("useGetProducts", () => {
@@ -47,5 +53,19 @@ describe("useGetProducts", () => {
     expect(result.current.products).toEqual(mockProducts);
     expect(result.current.status).toEqual(mockStatus);
     expect(result.current.error).toEqual(mockError);
+  });
+});
+
+describe("useDeleteProduct", () => {
+  it("should dispatch deleteProduct action with the provided id", () => {
+    const mockDispatch = jest.fn();
+    useDispatch.mockReturnValue(mockDispatch);
+    const id = 123;
+
+    const deleteProductAction = useDeleteProduct();
+    deleteProductAction(id);
+
+    expect(mockDispatch).toHaveBeenCalledTimes(1);
+    expect(deleteProduct).toHaveBeenCalledWith(id);
   });
 });
