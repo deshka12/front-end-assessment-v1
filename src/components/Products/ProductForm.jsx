@@ -54,7 +54,7 @@ const ProductForm = ({ onSave, product = {} }) => {
   };
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form data-auto-id="product-form" onSubmit={onSubmit}>
       <CustomInput
         name="name"
         label="Name"

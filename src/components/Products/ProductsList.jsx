@@ -16,7 +16,7 @@ const ProductList = () => {
   if (error) {
     return <Error />;
   }
-  
+
   const productsGroups = chunk(products, 3);
 
   return (

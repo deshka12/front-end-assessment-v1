@@ -1,6 +1,6 @@
 import React from "react";
-import { configure, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { configure, render, screen } from "@testing-library/react";
 import Loader from "./Loader";
 
 configure({ testIdAttribute: "data-auto-id" });
