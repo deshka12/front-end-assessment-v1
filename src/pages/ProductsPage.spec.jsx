@@ -2,7 +2,6 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { configure, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-
 import ProductsPage from "./ProductsPage";
 
 configure({ testIdAttribute: "data-auto-id" });
@@ -20,7 +19,7 @@ jest.mock("../hooks", () => ({
   useGetProductCategories: jest.fn(() => []),
 }));
 
-jest.mock("../components/Products/ProductsList", () => ({
+jest.mock("../components/ProductsList/ProductsList", () => ({
   __esModule: true,
   default: () => <div data-auto-id="products-list">{"ProductsList"}</div>,
 }));

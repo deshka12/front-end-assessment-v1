@@ -43,7 +43,7 @@ describe("ProductList", () => {
 
   it("should render products when loaded successfully", () => {
     useGetProducts.mockReturnValue({
-      products: [{ name: "product" }],
+      products: [{ name: "product", id: "1" }],
       status: "succeeded",
       error: null,
     });

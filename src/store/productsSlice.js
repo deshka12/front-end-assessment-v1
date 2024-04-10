@@ -1,3 +1,4 @@
+//file is left under store but in bigger application where there is separation with features will be moved there
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { productApi } from "../gateways/ProductApi";
 

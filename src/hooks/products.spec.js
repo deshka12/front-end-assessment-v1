@@ -1,8 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetProductById, useGetProducts } from "./products";
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useGetProducts } from "./products";
 
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
@@ -12,7 +10,6 @@ jest.mock("react-redux", () => ({
 jest.mock("react", () => ({
   ...jest.requireActual("react"),
   useState: jest.fn(),
-
 }));
 
 jest.mock("react-router-dom", () => ({
@@ -52,4 +49,3 @@ describe("useGetProducts", () => {
     expect(result.current.error).toEqual(mockError);
   });
 });
-

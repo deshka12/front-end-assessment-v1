@@ -3,7 +3,6 @@ import { render, screen, configure } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 import Product from "./Product";
-import { useDeleteProduct } from "../../../hooks";
 
 configure({ testIdAttribute: "data-auto-id" });
 
