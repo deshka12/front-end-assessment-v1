@@ -3,10 +3,20 @@ import Product from "./Product/Product";
 import { Row, Col } from "reactstrap";
 import { chunk } from "lodash";
 import { useGetProducts } from "../../hooks";
+import Loader from "../Loader/Loader";
+import Error from "../Error/Error";
 
 const ProductList = () => {
-  const { products } = useGetProducts();
+  const { products, status, error } = useGetProducts();
 
+  if (status === "loading") {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <Error />;
+  }
+  
   const productsGroups = chunk(products, 3);
 
   return (

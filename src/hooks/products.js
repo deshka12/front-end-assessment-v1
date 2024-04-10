@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { deleteProduct, getProducts } from "../store/productsSlice";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 
 export const useGetProducts = () => {
   const dispatch = useDispatch();
   const status = useSelector((state) => state.products.status);
   const products = useSelector((state) => state.products.data);
+  const error = useSelector((state) => state.products.error);
 
   useEffect(() => {
     if (!status) {
@@ -14,7 +15,7 @@ export const useGetProducts = () => {
     }
   }, [status, dispatch]);
 
-  return { products, status };
+  return { products, status, error };
 };
 
 export const useGetProductById = () => {
