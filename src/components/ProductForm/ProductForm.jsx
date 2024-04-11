@@ -32,6 +32,8 @@ const ProductForm = ({ onSave, product = {}, categories = [] }) => {
   const { isValidDate, invalidDateError } = isExpirationDateValid(
     formData.expirationDate
   );
+  const isSubmitDisabled =
+    !isNameCorrect || !isCategoriesCorrect || !isValidDate;
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -123,7 +125,7 @@ const ProductForm = ({ onSave, product = {}, categories = [] }) => {
         disabled
       />
       <hr />
-      <Button>Submit</Button>
+      <Button disabled={isSubmitDisabled}>Submit</Button>
     </Form>
   );
 };
