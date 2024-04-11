@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks";
 import { useDispatch, useSelector } from "react-redux";
-import { useCategories } from "./categories";
+import { useCategories, useGetProductCategories } from "./categories";
 
 jest.mock("react-redux", () => ({
   useDispatch: jest.fn(),
@@ -35,5 +35,45 @@ describe("useCategories", () => {
 
     expect(result.current.categories).toEqual(mockCategories);
     expect(result.current.status).toEqual(mockStatus);
+  });
+});
+
+describe("useGetProductCategories", () => {
+  beforeEach(() => {
+    useSelector.mockReset();
+  });
+
+  it('should return null when status is not "succeeded"', () => {
+    useSelector.mockReturnValueOnce("loading");
+    const { result } = renderHook(() =>
+      useGetProductCategories({ categories: [1] })
+    );
+
+    expect(result.current).toBeNull();
+  });
+
+  it("should return null when product has no categories", () => {
+    useSelector.mockReturnValueOnce([
+      { id: 1, name: "Category1" },
+      { id: 2, name: "Category2" },
+    ]);
+    useSelector.mockReturnValueOnce("succeeded");
+    const { result } = renderHook(() => useGetProductCategories({}));
+
+    expect(result.current).toBeNull();
+  });
+
+  it("should return an array of category objects for a product with categories", () => {
+    useSelector.mockReturnValueOnce("succeeded");
+    useSelector.mockReturnValueOnce([
+      { id: 1, name: "Category1" },
+      { id: 2, name: "Category2" },
+    ]);
+
+    const { result } = renderHook(() =>
+      useGetProductCategories({ categories: [1] })
+    );
+
+    expect(result.current).toEqual([{ id: 1, name: "Category1" }]);
   });
 });
