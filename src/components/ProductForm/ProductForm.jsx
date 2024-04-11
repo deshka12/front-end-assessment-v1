@@ -7,6 +7,7 @@ import {
   isChecked,
   isExpirationDateValid,
   isNameValid,
+  isValidItemsQuantity,
   repeat,
 } from "../../utils";
 import CustomInput from "../CustomInput/CustomInput";
@@ -32,8 +33,13 @@ const ProductForm = ({ onSave, product = {}, categories = [] }) => {
   const { isValidDate, invalidDateError } = isExpirationDateValid(
     formData.expirationDate
   );
+
+  const { isValidQuantity, invalidQuantityError } = isValidItemsQuantity(
+    formData.itemsInStock
+  );
+
   const isSubmitDisabled =
-    !isNameCorrect || !isCategoriesCorrect || !isValidDate;
+    !isNameCorrect || !isCategoriesCorrect || !isValidDate || !isValidQuantity;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -107,6 +113,8 @@ const ProductForm = ({ onSave, product = {}, categories = [] }) => {
         type="number"
         value={formData.itemsInStock}
         onChange={handleChange}
+        invalid={!isValidQuantity}
+        errorMessage={invalidQuantityError}
       />
       <CustomInput
         name="expirationDate"

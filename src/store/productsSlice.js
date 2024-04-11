@@ -12,14 +12,25 @@ const initialState = {
 //assume its real api call
 export const getProducts = createAsyncThunk(
   "products/getProducts",
-  async () => await productApi.getProducts()
+  async () => {
+    try {
+      const products = await productApi.getProducts();
+      return products;
+    } catch (error) {
+      throw error;
+    }
+  }
 );
 
-//assume its real api call
+//assume its real api calls
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
   async (id) => {
-    return await productApi.deleteProduct(id);
+    try {
+      return await productApi.deleteProduct(id);
+    } catch (error) {
+      throw error;
+    }
   }
 );
 

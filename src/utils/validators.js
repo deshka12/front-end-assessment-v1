@@ -24,3 +24,10 @@ export const isExpirationDateValid = (value) => {
 
   return { isValidDate, invalidDateError };
 };
+
+export const isValidItemsQuantity = (items) => {
+  const isValidQuantity = items >= 0;
+  const invalidQuantityError = "Invalid quantity";
+
+  return { isValidQuantity, invalidQuantityError };
+};
