@@ -10,7 +10,7 @@ import {
   repeat,
 } from "../../utils";
 import CustomInput from "../CustomInput/CustomInput";
-import { useCategoriesName, usePreselectedCategories } from "../../hooks";
+import { useCategoriesName } from "../../hooks";
 
 const ProductForm = ({ onSave, product = {}, categories = [] }) => {
   const categoriesName = useCategoriesName();
@@ -36,16 +36,24 @@ const ProductForm = ({ onSave, product = {}, categories = [] }) => {
     !isNameCorrect || !isCategoriesCorrect || !isValidDate;
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     let newValue = value;
 
     if (name === "categories") {
       newValue = getMultiSelected(e.target);
     }
 
+    if (name === "rating") {
+      setFormData((prevData) => ({
+        ...prevData,
+        rating: newValue,
+        featured: isChecked(newValue),
+      }));
+    }
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === "checkbox" ? checked : newValue,
+      [name]: newValue,
     }));
   };
 
@@ -120,7 +128,7 @@ const ProductForm = ({ onSave, product = {}, categories = [] }) => {
         name="Featured"
         label="Featured"
         type="checkbox"
-        checked={isChecked(formData.rating)}
+        checked={formData.featured}
         onChange={handleChange}
         disabled
       />
