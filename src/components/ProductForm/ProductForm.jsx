@@ -12,14 +12,13 @@ import {
 import CustomInput from "../CustomInput/CustomInput";
 import { useCategoriesName, usePreselectedCategories } from "../../hooks";
 
-const ProductForm = ({ onSave, product = {} }) => {
+const ProductForm = ({ onSave, product = {}, categories = [] }) => {
   const categoriesName = useCategoriesName();
-  const preselectedCategories = usePreselectedCategories(product);
   const [formData, setFormData] = useState({
     name: product.name || "",
     brand: product.brand || "",
     rating: product.rating || 0,
-    categories: preselectedCategories || [],
+    categories: categories || [],
     itemsInStock: product.itemsInStock || 0,
     receiptDate: product.receiptDate || "",
     expirationDate: product.expirationDate || "",
